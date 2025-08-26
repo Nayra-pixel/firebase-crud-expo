@@ -1,8 +1,9 @@
 // src/services/FirebaseClient.js
-import { initializeApp, getApps } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
+import { initializeApp, getApps } from "firebase/app";
+import { getDatabase } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
-// 🔴 Troque TUDO aqui pelos valores do seu app Web (console Firebase)
+// ⚠️ Cole aqui seu firebaseConfig
 const firebaseConfig = {
   apiKey: "AIzaSyCr-zXC40bdrO4KAqge_p-gv_kqaFRzNdY",
   authDomain: "meuapp-a39de.firebaseapp.com",
@@ -18,17 +19,17 @@ class FirebaseClient {
   constructor() {
     if (!getApps().length) {
       this.app = initializeApp(firebaseConfig);
-      console.log('[Firebase] App inicializado');
     } else {
       this.app = getApps()[0];
-      console.log('[Firebase] App reaproveitado');
     }
     this.db = getDatabase(this.app);
-    console.log('[Firebase] Realtime pronto. databaseURL =', firebaseConfig.databaseURL);
+    this.auth = getAuth(this.app); // 🔑 adiciona Auth
   }
 
   static getInstance() {
-    if (!FirebaseClient.instance) FirebaseClient.instance = new FirebaseClient();
+    if (!FirebaseClient.instance) {
+      FirebaseClient.instance = new FirebaseClient();
+    }
     return FirebaseClient.instance;
   }
 }
